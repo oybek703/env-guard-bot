@@ -1,3 +1,3 @@
 import { Markup } from 'telegraf'
 
-export const mainKeyboard = Markup.keyboard([['⚙ Settings']])
+export const mainKeyboard = Markup.keyboard([['⚙ Settings']]).resize()
