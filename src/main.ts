@@ -9,7 +9,7 @@ async function start() {
   await dbManager.init()
   const myBot = new MyBot()
   await myBot.start()
-  const handlers = new Handlers(myBot.bot, dbManager, myBot.commands)
+  const handlers = new Handlers(myBot.bot)
   await handlers.init()
 }
 

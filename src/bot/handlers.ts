@@ -9,7 +9,7 @@ export class Handlers {
 
   constructor(
     private readonly bot: Telegraf<Scenes.SceneContext>,
-    private readonly dbManager: DatabaseManager,
+    private readonly dbManager?: DatabaseManager,
     private readonly commands?: BotCommand[]
   ) {}
 
