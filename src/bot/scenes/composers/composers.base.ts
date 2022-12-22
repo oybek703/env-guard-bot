@@ -21,13 +21,21 @@ export class ComposersBase {
     return markUp
   }
 
-  chooseRegion = (): Composer<BotWizardContext> => {
+  createComposer = (
+    handler: (composer: Composer<BotWizardContext>) => void
+  ): Composer<BotWizardContext> => {
     const composer = new Composer<BotWizardContext>()
-    composer.on('text', async ctx => {
-      const regionsMarkUp = await this.getRegionsMarkUp()
-      await ctx.reply(chooseRegionText, Markup.keyboard(regionsMarkUp).resize())
-      return ctx.wizard.next()
-    })
+    handler(composer)
     return composer
+  }
+
+  chooseRegion = (): Composer<BotWizardContext> => {
+    return this.createComposer(composer => {
+      composer.on('text', async ctx => {
+        const regionsMarkUp = await this.getRegionsMarkUp()
+        await ctx.reply(chooseRegionText, Markup.keyboard(regionsMarkUp).resize())
+        return ctx.wizard.next()
+      })
+    })
   }
 }

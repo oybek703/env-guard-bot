@@ -5,10 +5,12 @@ import {
   backButtonText,
   mainMenuSelectOptionsText,
   reportButtonText,
+  reportSituationButtonText,
+  reportSituationText,
   startCommand,
   startHelloText
 } from './keyboards/texts'
-import { mainKeyboard } from './keyboards/markups'
+import { mainKeyboard, reportSituationMenuKeyboard } from './keyboards/markups'
 import { ScenesBase } from './scenes/scenes.base'
 import { addTaskWizardId } from './constants'
 
@@ -35,13 +37,17 @@ export class Handlers {
 
   onStart = () => {
     this.bot.start(async ctx => {
+      await this.dbManager.saveUser(ctx.update.message.from)
       await ctx.reply(startHelloText)
       return await ctx.reply(mainMenuSelectOptionsText, mainKeyboard)
     })
   }
 
   onKeyboardCommands = () => {
-    this.bot.hears(reportButtonText, async ctx => ctx.scene.enter(this.addTaskWizard))
+    this.bot.hears(reportButtonText, ctx =>
+      ctx.reply(reportSituationText, reportSituationMenuKeyboard)
+    )
+    this.bot.hears(reportSituationButtonText, ctx => ctx.scene.enter(this.addTaskWizard))
     this.bot.hears(backButtonText, ctx => ctx.reply(mainMenuSelectOptionsText, mainKeyboard))
   }
 }

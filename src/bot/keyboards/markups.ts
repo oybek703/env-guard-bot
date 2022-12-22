@@ -1,8 +1,10 @@
 import { Markup } from 'telegraf'
 import {
   backButtonText,
+  passLocationButtonText,
   reportButtonText,
   reportSituationButtonText,
+  sendLocationButtonText,
   statisticsButtonText,
   taskListButtonText
 } from './texts'
@@ -15,5 +17,13 @@ export const mainKeyboard = Markup.keyboard([
 
 export const reportSituationMenuKeyboard = Markup.keyboard([
   [reportSituationButtonText],
+  [backButtonText]
+]).resize()
+
+export const backKeyboard = Markup.keyboard([backButtonText]).resize()
+
+export const askLocationMenuKeyboard = Markup.keyboard([
+  [{ text: sendLocationButtonText, request_location: true }],
+  [passLocationButtonText],
   [backButtonText]
 ]).resize()

@@ -24,7 +24,11 @@ export class ScenesBase {
     return new Scenes.WizardScene<BotWizardContext>(
       addTaskWizardId,
       this.composers.chooseRegion(),
-      this.composers.chooseDistrict()
+      this.composers.chooseDistrict(),
+      this.composers.saveArea(),
+      this.composers.getPhoto(),
+      this.composers.askComment(),
+      this.composers.askLocation()
     )
   }
 }

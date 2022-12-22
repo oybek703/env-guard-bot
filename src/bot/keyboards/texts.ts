@@ -4,6 +4,14 @@ export const taskListButtonText = `✔ Vazifalar ro'yhati`
 export const statisticsButtonText = `📊 Statistika`
 export const backButtonText = '⏪ Orqaga'
 export const reportSituationButtonText = '⚡ Holat haqida bildirish'
+export const backToMainButtonText = `⏪ Asosiy bo'lim`
+export const sendLocationButtonText = `📍 Lokatsiyani jo'natish`
+export const passLocationButtonText = `➡ Lokatsiya yubormasdan o'tkazib yuborish`
+export const taskFinishedButtonText = `✅ Bartaraf etilganini bildirish`
+export const confirmButtonText = `✅ Tasdiqlash`
+export const cancelButtonText = `❌ Rad etish`
+export const personalStatisticsButtonText = `👤 Shaxsiy statistika`
+export const byAreaStatisticsButtonText = `📊 Hududiy statistika`
 
 export const startHelloText = `
 Assalomu aleykum 👋
@@ -29,4 +37,12 @@ Sizning bildirishingiz vazifalar
 ro'yhatiga qo'shiladi va bartaraf etilgach tasdiqlashingiz mumkin bo'ladi.
 `
 
+export const taskAddedText = `✅ Bildirishnomangiz vazifalar ro'yhatiga qo'shildi, sizdan minnatdormiz.`
+
+export const sendPhotoText = `🗃 Ajoyib! Marhamat, holatni tasvirlovchi fotosuratni yuborishingiz mumkin.`
+export const leaveCommentText = `💬 Holat haqida izoh qoldirishingiz mumkin.`
+export const sendLocationText = '🛣 Holat joylashgan manzilni yuborishingiz mumkin'
+
 export const invalidAreaWarn = `❌ Noto'g'ri hudud!`
+export const sendPhotoWarn = `❌ Iltimos rasm yuboring!`
+export const sendLocationWarn = `❌ Iltimos manzil yuboring!`
