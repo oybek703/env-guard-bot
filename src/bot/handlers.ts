@@ -1,36 +1,47 @@
-import { Scenes, session, Telegraf } from 'telegraf'
+import { Scenes, Telegraf } from 'telegraf'
 import { BotCommand } from 'telegraf/typings/core/types/typegram'
 import { DatabaseManager } from '../database/database-manager'
-import { startScene } from './scenes/start.scene'
-import { startWizardId } from './constants'
+import {
+  backButtonText,
+  mainMenuSelectOptionsText,
+  reportButtonText,
+  startCommand,
+  startHelloText
+} from './keyboards/texts'
+import { mainKeyboard } from './keyboards/markups'
+import { ScenesBase } from './scenes/scenes.base'
+import { addTaskWizardId } from './constants'
 
 export class Handlers {
-  stage: Scenes.Stage<Scenes.SceneContext>
-  private commands?: BotCommand[]
+  scenes: ScenesBase
+  private readonly dbManager: DatabaseManager
+  addTaskWizard = addTaskWizardId
+  private commands: BotCommand[] = [{ command: startCommand, description: 'Start bot' }]
 
-  constructor(
-    private readonly bot: Telegraf<Scenes.SceneContext>,
-    private readonly dbManager?: DatabaseManager
-  ) {}
+  constructor(private readonly bot: Telegraf<Scenes.SceneContext>, dbManager?: DatabaseManager) {
+    if (dbManager) this.dbManager = dbManager
+    this.scenes = new ScenesBase(bot, this.dbManager)
+  }
 
-  init = async (commands?: BotCommand[]) => {
-    this.commands = commands
-    this.stage = new Scenes.Stage<Scenes.SceneContext>([startScene as any])
-    this.bot.use(session())
-    this.bot.use(this.stage.middleware())
+  init = async () => {
+    await this.scenes.init()
+    await this.setBotCommands()
     this.onStart()
     this.onKeyboardCommands()
-    await this.setBotCommands()
     await this.bot.launch()
   }
 
-  async setBotCommands() {
-    if (this.commands) return await this.bot.telegram.setMyCommands(this.commands)
-  }
+  setBotCommands = () => this.bot.telegram.setMyCommands(this.commands)
 
   onStart = () => {
-    this.bot.start(ctx => ctx.scene.enter(startWizardId))
+    this.bot.start(async ctx => {
+      await ctx.reply(startHelloText)
+      return await ctx.reply(mainMenuSelectOptionsText, mainKeyboard)
+    })
   }
 
-  onKeyboardCommands = () => {}
+  onKeyboardCommands = () => {
+    this.bot.hears(reportButtonText, async ctx => ctx.scene.enter(this.addTaskWizard))
+    this.bot.hears(backButtonText, ctx => ctx.reply(mainMenuSelectOptionsText, mainKeyboard))
+  }
 }
