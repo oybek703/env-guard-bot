@@ -6,18 +6,15 @@ import { startWizardId } from './constants'
 
 export class Handlers {
   stage: Scenes.Stage<Scenes.SceneContext>
+  private commands?: BotCommand[]
 
   constructor(
     private readonly bot: Telegraf<Scenes.SceneContext>,
-    private readonly dbManager?: DatabaseManager,
-    private readonly commands?: BotCommand[]
+    private readonly dbManager?: DatabaseManager
   ) {}
 
-  async setBotCommands() {
-    if (this.commands) return await this.bot.telegram.setMyCommands(this.commands)
-  }
-
-  init = async () => {
+  init = async (commands?: BotCommand[]) => {
+    this.commands = commands
     this.stage = new Scenes.Stage<Scenes.SceneContext>([startScene as any])
     this.bot.use(session())
     this.bot.use(this.stage.middleware())
@@ -25,6 +22,10 @@ export class Handlers {
     this.onKeyboardCommands()
     await this.setBotCommands()
     await this.bot.launch()
+  }
+
+  async setBotCommands() {
+    if (this.commands) return await this.bot.telegram.setMyCommands(this.commands)
   }
 
   onStart = () => {
