@@ -1,1 +1,3 @@
-## Admin bot
+### Telegram bot template
+
+##### Clone repo, run ``npm i`` and start coding...

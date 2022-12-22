@@ -3,7 +3,7 @@ import { Scenes, Telegraf } from 'telegraf'
 import { BotCommand } from 'telegraf/typings/core/types/typegram'
 import { startCommand } from './keyboards/texts'
 
-export class BotClass {
+export class MyBot {
   private readonly token: string
   bot: Telegraf<Scenes.SceneContext>
   commands: BotCommand[] = [{ command: startCommand, description: 'Start bot' }]
