@@ -1,21 +1,27 @@
 import { Scenes, session, Telegraf } from 'telegraf'
-import { MainComposers } from './composers/main-composers'
+import { AddTaskComposers } from './composers/add-task.composers'
 import { BotWizardContext } from '../../interfaces/context.interface'
-import { addTaskWizardId } from '../constants'
+import { addTaskWizardId, taskListWizardId } from '../constants'
 import { DatabaseManager } from '../../database/database-manager'
+import { TaskListComposers } from './composers/task-list.composers'
 
 export class ScenesBase {
   stage: Scenes.Stage<Scenes.SceneContext>
-  composers: MainComposers
+  addTaskComposers: AddTaskComposers
+  taskListComposers: TaskListComposers
   constructor(
     private readonly bot: Telegraf<Scenes.SceneContext>,
     private readonly dbManger: DatabaseManager
   ) {
-    this.composers = new MainComposers(dbManger)
+    this.addTaskComposers = new AddTaskComposers(dbManger)
+    this.taskListComposers = new TaskListComposers(dbManger)
   }
 
   init = async () => {
-    this.stage = new Scenes.Stage<Scenes.SceneContext>([this.addTaskScene() as any])
+    this.stage = new Scenes.Stage<Scenes.SceneContext>([
+      this.addTaskScene() as any,
+      this.taskListScene() as any
+    ])
     this.bot.use(session())
     this.bot.use(this.stage.middleware())
   }
@@ -23,12 +29,21 @@ export class ScenesBase {
   addTaskScene = (): Scenes.WizardScene<BotWizardContext> => {
     return new Scenes.WizardScene<BotWizardContext>(
       addTaskWizardId,
-      this.composers.chooseRegion(),
-      this.composers.chooseDistrict(),
-      this.composers.saveArea(),
-      this.composers.getPhoto(),
-      this.composers.askComment(),
-      this.composers.askLocation()
+      this.addTaskComposers.chooseRegion(),
+      this.addTaskComposers.chooseDistrict(),
+      this.addTaskComposers.saveArea(),
+      this.addTaskComposers.getPhoto(),
+      this.addTaskComposers.askComment(),
+      this.addTaskComposers.askLocation()
+    )
+  }
+
+  taskListScene = (): Scenes.WizardScene<BotWizardContext> => {
+    return new Scenes.WizardScene<BotWizardContext>(
+      taskListWizardId,
+      this.taskListComposers.chooseRegion(),
+      this.taskListComposers.chooseDistrict(),
+      this.taskListComposers.showTasks()
     )
   }
 }

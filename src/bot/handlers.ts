@@ -8,16 +8,16 @@ import {
   reportSituationButtonText,
   reportSituationText,
   startCommand,
-  startHelloText
+  startHelloText,
+  taskListButtonText
 } from './keyboards/texts'
 import { mainKeyboard, reportSituationMenuKeyboard } from './keyboards/markups'
 import { ScenesBase } from './scenes/scenes.base'
-import { addTaskWizardId } from './constants'
+import { addTaskWizardId, taskListWizardId } from './constants'
 
 export class Handlers {
   scenes: ScenesBase
   private readonly dbManager: DatabaseManager
-  addTaskWizard = addTaskWizardId
   private commands: BotCommand[] = [{ command: startCommand, description: 'Start bot' }]
 
   constructor(private readonly bot: Telegraf<Scenes.SceneContext>, dbManager?: DatabaseManager) {
@@ -47,7 +47,8 @@ export class Handlers {
     this.bot.hears(reportButtonText, ctx =>
       ctx.reply(reportSituationText, reportSituationMenuKeyboard)
     )
-    this.bot.hears(reportSituationButtonText, ctx => ctx.scene.enter(this.addTaskWizard))
+    this.bot.hears(reportSituationButtonText, ctx => ctx.scene.enter(addTaskWizardId))
+    this.bot.hears(taskListButtonText, ctx => ctx.scene.enter(taskListWizardId))
     this.bot.hears(backButtonText, ctx => ctx.reply(mainMenuSelectOptionsText, mainKeyboard))
   }
 }

@@ -1,4 +1,11 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn
+} from 'typeorm'
 import { Region } from './region'
 import { District } from './district'
 import { User } from './user'
@@ -22,6 +29,12 @@ export class Task {
 
   @Column()
   image: string
+
+  @CreateDateColumn()
+  createdAt?: Date
+
+  @UpdateDateColumn()
+  updatedAt?: Date
 
   @ManyToOne(() => Region, region => region.tasks)
   region: Region

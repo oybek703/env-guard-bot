@@ -106,4 +106,21 @@ export class DatabaseManager {
       await this.taskRepository.save(newTask)
     }
   }
+
+  getTasksByArea({ districtId, regionId }: Pick<createTaskOptions, 'districtId' | 'regionId'>) {
+    return this.taskRepository
+      .createQueryBuilder('task')
+      .innerJoinAndSelect('task.region', 'region', 'region.id = :regionId', { regionId })
+      .innerJoinAndSelect('task.district', 'district', 'district.id = :districtId', {
+        districtId
+      })
+      .select([
+        'comment',
+        'region.name AS "regionName"',
+        'district.name AS "districtName"',
+        'task.finished AS "finished"',
+        'task.createdAt AS "createdAt"'
+      ])
+      .getRawMany()
+  }
 }
