@@ -4,6 +4,7 @@ import { BotWizardContext } from '../../interfaces/context.interface'
 import { addTaskWizardId, taskListWizardId } from '../constants'
 import { DatabaseManager } from '../../database/database-manager'
 import { TaskListComposers } from './composers/task-list.composers'
+import { startCommand } from '../keyboards/texts'
 
 export class ScenesBase {
   stage: Scenes.Stage<Scenes.SceneContext>
@@ -35,7 +36,7 @@ export class ScenesBase {
       this.addTaskComposers.getPhoto(),
       this.addTaskComposers.askComment(),
       this.addTaskComposers.askLocation()
-    )
+    ).command(startCommand, ctx => ctx.scene.leave())
   }
 
   taskListScene = (): Scenes.WizardScene<BotWizardContext> => {
@@ -44,6 +45,6 @@ export class ScenesBase {
       this.taskListComposers.chooseRegion(),
       this.taskListComposers.chooseDistrict(),
       this.taskListComposers.showTasks()
-    )
+    ).command(startCommand, ctx => ctx.scene.leave())
   }
 }

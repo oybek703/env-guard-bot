@@ -6,6 +6,7 @@ import { District } from './entities/district'
 import { Task } from './entities/task'
 import { User } from './entities/user'
 import { User as TelegramUser } from 'telegraf/typings/core/types/typegram'
+import { ITaskByArea } from '../interfaces/bot.interfaces'
 
 type createTaskOptions = Omit<Task, 'region' | 'district' | 'id' | 'user'> & {
   regionId: number
@@ -107,20 +108,60 @@ export class DatabaseManager {
     }
   }
 
-  getTasksByArea({ districtId, regionId }: Pick<createTaskOptions, 'districtId' | 'regionId'>) {
+  getTasksByArea({
+    districtId,
+    regionId
+  }: Pick<createTaskOptions, 'districtId' | 'regionId'>): Promise<ITaskByArea[]> {
     return this.taskRepository
       .createQueryBuilder('task')
       .innerJoinAndSelect('task.region', 'region', 'region.id = :regionId', { regionId })
       .innerJoinAndSelect('task.district', 'district', 'district.id = :districtId', {
         districtId
       })
+      .where('task.finished = :finished', { finished: false })
       .select([
+        'task.id AS "id"',
         'comment',
+        'image',
+        'task.chatId AS "chatId"',
         'region.name AS "regionName"',
         'district.name AS "districtName"',
         'task.finished AS "finished"',
         'task.createdAt AS "createdAt"'
       ])
       .getRawMany()
+  }
+
+  getTaskWithArea(taskId: number): Promise<ITaskByArea | undefined> {
+    return this.taskRepository
+      .createQueryBuilder('task')
+      .innerJoin('task.region', 'region')
+      .innerJoinAndSelect('task.district', 'district')
+      .innerJoinAndSelect('task.user', 'user')
+      .where('task.id = :taskId', { taskId })
+      .select([
+        'task.id AS "id"',
+        'comment',
+        'image',
+        'task.chatId AS "chatId"',
+        'region.name AS "regionName"',
+        'district.name AS "districtName"',
+        'task.finished AS "finished"',
+        'task.createdAt AS "createdAt"'
+      ])
+      .getRawOne()
+  }
+
+  getTaskById(taskId: number) {
+    return this.taskRepository.findOne({ where: { id: taskId }, relations: { user: true } })
+  }
+
+  async markTaskAsFinished(taskId: number) {
+    await this.taskRepository
+      .createQueryBuilder()
+      .where('tasks.id = :taskId', { taskId })
+      .update()
+      .set({ finished: true })
+      .execute()
   }
 }

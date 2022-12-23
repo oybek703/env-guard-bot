@@ -29,6 +29,7 @@ export const mainMenuSelectOptionsText = `👇 Quyidagilardan birini tanlashingi
 
 export const chooseRegionText = `👇 Viloyatlardan birini tanlang:`
 export const chooseDistrictText = `👇 Tumanlardan birini tanlang:`
+export const canChooseTaskText = `📝 Tanlashingiz mumkin`
 
 export const reportSituationText = `
 🌳 Bu bo'lim orqali siz ekologiyaga zarar keltirayotgan yoki zarar
@@ -37,7 +38,41 @@ Sizning bildirishingiz vazifalar
 ro'yhatiga qo'shiladi va bartaraf etilgach tasdiqlashingiz mumkin bo'ladi.
 `
 
+export const taskCheckSendText = `
+🥳 Sizdan benihoya minnatdormiz!
+⌛ Muammo bartaraf etilgani haqidagi xabar tasqidlash uchun 
+yuborildi. Sizga javobni tez orada ma'lum qilamiz. 
+`
+
+export const askConfirmationText = `
+👏 Hurmatli foydalanuvchi, sizning yuborgan ma'lumotlaringizga ko'ra
+aniqlangan muammo bartaraf etilgani haqida xabar oldik.
+Sizdan bu xabar haqiqatdan to'g'ri ekanini tasdiqlashingizni so'raymiz ✅.
+`
+
+export const thanksText = `
+✅ Siz tomondan bartaraf etilgan muammo tasdiqlandi.
+🤝 Hamkorligingiz uchun minnatdormiz.
+`
+
+export const thanksForConfirmationText = `
+👌 Tasdiqlaganingiz uchun tashakkur! Xabar yuboruvchisiga 
+tasdiqlaganingiz haqida bildirdik.
+Endilikda bu holat vazifalar ro'yhatida ko'rsatilmaydi.
+🤝 Hamkorligingiz uchun minnatdormiz!
+`
+
+export const cancelConfirmText = `
+⚠ Sizning so'rovingiz rad etildi.
+Iltimos ma'lumotlar aniqligini tekshiring yoki keyinroq urinib ko'ring.
+`
+
+export const cancelInfoSendText = `
+⚠ Sizning javobingiz yetkazildi.
+`
+
 export const taskAddedText = `✅ Bildirishnomangiz vazifalar ro'yhatiga qo'shildi, sizdan minnatdormiz.`
+export const tasksListEmptyText = `🗑 Vazifalar ro'yhati bu hudud uchun bo'sh.`
 
 export const sendPhotoText = `🗃 Ajoyib! Marhamat, holatni tasvirlovchi fotosuratni yuborishingiz mumkin.`
 export const leaveCommentText = `💬 Holat haqida izoh qoldirishingiz mumkin.`
@@ -46,3 +81,23 @@ export const sendLocationText = '🛣 Holat joylashgan manzilni yuborishingiz mu
 export const invalidAreaWarn = `❌ Noto'g'ri hudud!`
 export const sendPhotoWarn = `❌ Iltimos rasm yuboring!`
 export const sendLocationWarn = `❌ Iltimos manzil yuboring!`
+export const botBlockedWarn = `
+⚠ Foydalanuvchi botni o'chirgan!
+ℹ Iltimos keyinroq urinib ko'ring.
+`
+
+export const infoText = `Ma'lumotlar:`
+export const commentText = `Izoh:`
+export const regionText = `Viloyat:`
+export const districtText = `Tuman:`
+export const createdDataText = `Yuborilgan sana:`
+export const taskStatusText = `Holati:`
+
+export const captionIconComment = `💬 ${commentText}`
+export const captionIconRegion = `🛣 ${regionText}`
+export const captionIconDistrict = `🏢 ${districtText}`
+export const captionIconCreatedDate = `🕛 ${createdDataText}`
+export const yourSendInfoText = `Siz yuborgan ma'lumotlar:`
+export const taskStatusIconText = `ℹ Holati:`
+export const taskFinishedText = `bajarilgan.`
+export const taskInProcessText = `jarayonda.`
