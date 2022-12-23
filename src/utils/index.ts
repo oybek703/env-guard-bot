@@ -1,23 +1,40 @@
 import { format } from 'date-fns'
 import { ITaskByArea } from '../interfaces/bot.interfaces'
 import {
+  allIconReportsCountText,
   askConfirmationText,
+  byRegionStatisticsText,
+  byRegionText,
   cancelConfirmText,
   captionIconComment,
   captionIconCreatedDate,
   captionIconDistrict,
   captionIconRegion,
+  countFinishedText,
+  countFromText,
   districtText,
+  finishedCountText,
   infoText,
+  inProcessCountText,
+  notFinishedText,
+  personalStatisticsButtonText,
   regionText,
+  reportsSituationText,
   taskFinishedText,
   taskInProcessText,
   taskStatusIconText,
   taskStatusText,
   thanksForConfirmationText,
   thanksText,
+  yourFinishedCountText,
   yourSendInfoText
 } from '../bot/keyboards/texts'
+import {
+  countFinishedPlaceHolder,
+  countFromPlaceHolder,
+  notFinishedPlaceHolder,
+  rgNamePlaceHolder
+} from '../bot/constants'
 
 export function splitArray(array: { name: string }[]) {
   const markUp = []
@@ -99,5 +116,29 @@ export function askConfirmationCaption(task: ITaskByArea) {
   ${regionText} ${task.regionName} 
   ${districtText} ${task.districtName}
   ${taskStatusText} ${task.finished ? taskFinishedText : taskInProcessText}
+  `)
+}
+
+export function personalStatisticsCaption(all: number, finished: number) {
+  return normalizeCaption(`
+  ${personalStatisticsButtonText}
+  
+  ${reportsSituationText}
+  ${allIconReportsCountText} ${all}
+  ${finishedCountText} ${finished}
+  ${inProcessCountText} ${all - finished}
+  
+  ${yourFinishedCountText} ${finished}
+  `)
+}
+
+export function byAreaStatisticsCaption(regionName: string, all: number, finished: number) {
+  return normalizeCaption(`
+  ${byRegionStatisticsText.replace(rgNamePlaceHolder, regionName)}
+  
+  ${byRegionText}
+  ${countFromText.replace(countFromPlaceHolder, `${all}`)}
+  ${countFinishedText.replace(countFinishedPlaceHolder, `${finished}`)}
+  ${notFinishedText.replace(notFinishedPlaceHolder, `${all - finished}`)}
   `)
 }

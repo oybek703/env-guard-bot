@@ -7,12 +7,7 @@ import { Task } from './entities/task'
 import { User } from './entities/user'
 import { User as TelegramUser } from 'telegraf/typings/core/types/typegram'
 import { ITaskByArea } from '../interfaces/bot.interfaces'
-
-type createTaskOptions = Omit<Task, 'region' | 'district' | 'id' | 'user'> & {
-  regionId: number
-  districtId: number
-  telegramUserId: number
-}
+import { createTaskOptions } from '../interfaces/database.interfaces'
 
 export class DatabaseManager {
   readonly db: DataSource
@@ -61,34 +56,28 @@ export class DatabaseManager {
     return this.regionRepository.find()
   }
 
-  findRegionByName(regionName: string) {
-    return this.regionRepository.findOne({ where: { name: regionName } })
+  getRegionByName(regionName: string) {
+    return this.regionRepository.findOneBy({ name: regionName })
   }
 
   getDistrictsByRegion(regionId: number) {
-    return this.districtRepository.find({
-      where: {
-        region: {
-          id: regionId
-        }
-      }
-    })
+    return this.districtRepository.findBy({ region: { id: regionId } })
   }
 
   getDistrictByName(districtName: string) {
-    return this.districtRepository.findOne({ where: { name: districtName } })
+    return this.districtRepository.findOneBy({ name: districtName })
   }
 
   getRegionById(regionId: number) {
-    return this.regionRepository.findOne({ where: { id: regionId } })
+    return this.regionRepository.findOneBy({ id: regionId })
   }
 
   getDistrictById(districtId: number) {
-    return this.districtRepository.findOne({ where: { id: districtId } })
+    return this.districtRepository.findOneBy({ id: districtId })
   }
 
   getUserByTelegramId(telegramUserId: number) {
-    return this.userRepository.findOne({ where: { telegramUserId } })
+    return this.userRepository.findOneBy({ telegramUserId })
   }
 
   async createTask(options: createTaskOptions) {
@@ -152,8 +141,49 @@ export class DatabaseManager {
       .getRawOne()
   }
 
-  getTaskById(taskId: number) {
-    return this.taskRepository.findOne({ where: { id: taskId }, relations: { user: true } })
+  getRegionTasksCount(regionId: number) {
+    return this.taskRepository
+      .createQueryBuilder('task')
+      .where('task.regionId = :regionId', { regionId })
+      .getCount()
+  }
+
+  getRegionFinishedTasksCount(regionId: number) {
+    return this.taskRepository
+      .createQueryBuilder('task')
+      .where('task.regionId = :regionId', { regionId })
+      .andWhere('task.finished = :finished', { finished: true })
+      .getCount()
+  }
+
+  getUserTasksCount(chatId: number) {
+    return this.taskRepository
+      .createQueryBuilder('task')
+      .where('task.chatId = :chatId', { chatId })
+      .getCount()
+  }
+
+  getUserFinishedTasksCount(chatId: number) {
+    return this.taskRepository
+      .createQueryBuilder('task')
+      .where('task.chatId = :chatId', { chatId })
+      .andWhere('task.finished = :finished', { finished: true })
+      .getCount()
+  }
+
+  getDistrictsTasksCount(districtId: number) {
+    return this.taskRepository
+      .createQueryBuilder('task')
+      .where('task.districtId = :districtId', { districtId })
+      .getCount()
+  }
+
+  getDistrictsFinishedTasksCount(districtId: number) {
+    return this.taskRepository
+      .createQueryBuilder('task')
+      .where('task.districtId = :districtId', { districtId })
+      .andWhere('task.finished = :finished', { finished: true })
+      .getCount()
   }
 
   async markTaskAsFinished(taskId: number) {

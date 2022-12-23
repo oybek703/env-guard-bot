@@ -1,3 +1,10 @@
+import {
+  countFinishedPlaceHolder,
+  countFromPlaceHolder,
+  notFinishedPlaceHolder,
+  rgNamePlaceHolder
+} from '../constants'
+
 export const startCommand = `start`
 export const reportButtonText = `📝 Xabar berish`
 export const taskListButtonText = `✔ Vazifalar ro'yhati`
@@ -26,6 +33,7 @@ bartaraf qilishda o'z hissangizni qo'shishingiz mumkin. 🤝
 `
 
 export const mainMenuSelectOptionsText = `👇 Quyidagilardan birini tanlashingiz mumkin:`
+export const selectStatisticsText = `Qaysi turdagi statistikani ko'rishni xohlaysiz?`
 
 export const chooseRegionText = `👇 Viloyatlardan birini tanlang:`
 export const chooseDistrictText = `👇 Tumanlardan birini tanlang:`
@@ -92,6 +100,7 @@ export const regionText = `Viloyat:`
 export const districtText = `Tuman:`
 export const createdDataText = `Yuborilgan sana:`
 export const taskStatusText = `Holati:`
+export const allText = `Jami:`
 
 export const captionIconComment = `💬 ${commentText}`
 export const captionIconRegion = `🛣 ${regionText}`
@@ -101,3 +110,14 @@ export const yourSendInfoText = `Siz yuborgan ma'lumotlar:`
 export const taskStatusIconText = `ℹ Holati:`
 export const taskFinishedText = `bajarilgan.`
 export const taskInProcessText = `jarayonda.`
+
+export const reportsSituationText = `🤝 Xabar qilingan holatlar:`
+export const allIconReportsCountText = `🧮 ${allText}`
+export const finishedCountText = `✅ Bartaraf etilgan:`
+export const inProcessCountText = `⌛ Vazifalar ro'yhatida:`
+export const yourFinishedCountText = `😎 Siz tomoningizdan bartaraf etilgan holatlar:`
+export const byRegionText = `Viloyat bo'yicha:`
+export const byRegionStatisticsText = `📊 ${rgNamePlaceHolder} uchun hududiy statistika:`
+export const countFromText = `${allIconReportsCountText} ${countFromPlaceHolder} ta holatdan`
+export const countFinishedText = `✅ ${countFinishedPlaceHolder} tasi bartaraf etilgan.`
+export const notFinishedText = `❌ ${notFinishedPlaceHolder} tasi hali bartaraf etilmagan.`

@@ -1,2 +1,7 @@
 export const addTaskWizardId = 'add-task'
 export const taskListWizardId = 'task-list'
+export const statisticsWizardId = 'statistics'
+export const rgNamePlaceHolder = '__region__name__'
+export const countFromPlaceHolder = '__count__'
+export const countFinishedPlaceHolder = '__finished__'
+export const notFinishedPlaceHolder = '__not__finished__'

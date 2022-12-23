@@ -48,7 +48,7 @@ export class TaskListComposers extends ComposersBase {
               const { message_id } = await ctx.replyWithPhoto(task.image, {
                 caption: taskByAreaCaption(task),
                 ...Markup.inlineKeyboard(
-                  task.finished
+                  task.finished || task.chatId === chatId
                     ? []
                     : [Markup.button.callback(taskFinishedButtonText, task.id.toString())]
                 )

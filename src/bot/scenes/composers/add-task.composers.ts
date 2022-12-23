@@ -14,7 +14,7 @@ import {
   sendPhotoWarn,
   taskAddedText
 } from '../../keyboards/texts'
-import { askLocationMenuKeyboard, backKeyboard, mainKeyboard } from '../../keyboards/markups'
+import { askLocationKeyboard, backKeyboard, mainKeyboard } from '../../keyboards/markups'
 
 export class AddTaskComposers extends ComposersBase {
   saveArea = (): Composer<BotWizardContext> => {
@@ -64,7 +64,7 @@ export class AddTaskComposers extends ComposersBase {
           return ctx.wizard.back()
         }
         ctx.scene.state = { ...ctx.scene.state, comment: text }
-        await ctx.reply(sendLocationText, askLocationMenuKeyboard)
+        await ctx.reply(sendLocationText, askLocationKeyboard)
         return ctx.wizard.next()
       })
     })

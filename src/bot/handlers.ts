@@ -4,19 +4,28 @@ import { DatabaseManager } from '../database/database-manager'
 import {
   backButtonText,
   backToMainButtonText,
+  byAreaStatisticsButtonText,
   cancelInfoSendText,
   mainMenuSelectOptionsText,
+  personalStatisticsButtonText,
   reportButtonText,
   reportSituationButtonText,
   reportSituationText,
+  selectStatisticsText,
   startCommand,
   startHelloText,
+  statisticsButtonText,
   taskListButtonText
 } from './keyboards/texts'
-import { backKeyboard, mainKeyboard, reportSituationMenuKeyboard } from './keyboards/markups'
+import { mainKeyboard, reportSituationKeyboard, statisticsKeyboard } from './keyboards/markups'
 import { ScenesBase } from './scenes/scenes.base'
-import { addTaskWizardId, taskListWizardId } from './constants'
-import { cancelConfirmCaption, taskFinishCaption, thanksCaption } from '../utils'
+import { addTaskWizardId, statisticsWizardId, taskListWizardId } from './constants'
+import {
+  cancelConfirmCaption,
+  personalStatisticsCaption,
+  taskFinishCaption,
+  thanksCaption
+} from '../utils'
 
 export class Handlers {
   scenes: ScenesBase
@@ -32,7 +41,10 @@ export class Handlers {
     await this.scenes.init()
     await this.setBotCommands()
     this.onStart()
-    this.onKeyboardCommands()
+    this.onBackNavigate()
+    this.onAddReport()
+    this.onTaskList()
+    this.onStatistics()
     this.onTaskFinishedConfirm()
     this.onTaskFinishedCancel()
     await this.bot.launch()
@@ -48,15 +60,30 @@ export class Handlers {
     })
   }
 
-  onKeyboardCommands = () => {
-    this.bot.hears(reportButtonText, ctx =>
-      ctx.reply(reportSituationText, reportSituationMenuKeyboard)
-    )
-    this.bot.hears(reportSituationButtonText, ctx => ctx.scene.enter(addTaskWizardId))
-    this.bot.hears(taskListButtonText, ctx => ctx.scene.enter(taskListWizardId))
+  onBackNavigate = () => {
     this.bot.hears([backButtonText, backToMainButtonText], ctx =>
       ctx.reply(mainMenuSelectOptionsText, mainKeyboard)
     )
+  }
+
+  onAddReport = () => {
+    this.bot.hears(reportButtonText, ctx => ctx.reply(reportSituationText, reportSituationKeyboard))
+    this.bot.hears(reportSituationButtonText, ctx => ctx.scene.enter(addTaskWizardId))
+  }
+
+  onTaskList = () => {
+    this.bot.hears(taskListButtonText, ctx => ctx.scene.enter(taskListWizardId))
+  }
+
+  onStatistics = () => {
+    this.bot.hears(statisticsButtonText, ctx => ctx.reply(selectStatisticsText, statisticsKeyboard))
+    this.bot.hears(personalStatisticsButtonText, async ctx => {
+      const { id } = ctx.update.message.chat
+      const allUserTasks = await this.dbManager.getUserTasksCount(id)
+      const finishedUserTasks = await this.dbManager.getUserFinishedTasksCount(id)
+      return await ctx.reply(personalStatisticsCaption(allUserTasks, finishedUserTasks))
+    })
+    this.bot.hears(byAreaStatisticsButtonText, ctx => ctx.scene.enter(statisticsWizardId))
   }
 
   onTaskFinishedConfirm = () => {
