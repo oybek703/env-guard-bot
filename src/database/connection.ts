@@ -4,6 +4,8 @@ import { District } from './entities/district'
 import { Task } from './entities/task'
 import { User } from './entities/user'
 
+const isDevelopment = process.env.NODE === 'development'
+
 export const dataSource = new DataSource({
   type: 'postgres',
   host: process.env.PGHOST,
@@ -12,5 +14,5 @@ export const dataSource = new DataSource({
   username: process.env.PGUSER,
   password: process.env.PGPASSWORD,
   entities: [Region, District, Task, User],
-  synchronize: true
+  synchronize: isDevelopment
 })
