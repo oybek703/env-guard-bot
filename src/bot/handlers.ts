@@ -96,7 +96,7 @@ export class Handlers {
         await this.dbManager.markTaskAsFinished(taskId)
         await ctx.deleteMessage()
         await ctx.telegram.sendPhoto(senderChatId, task.image, {
-          caption: thanksCaption(task)
+          caption: thanksCaption({ ...task, finished: true })
         })
         await ctx.answerCbQuery('✅')
         return await ctx.replyWithPhoto(task.image, {
